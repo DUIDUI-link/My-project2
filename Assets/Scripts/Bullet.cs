@@ -7,9 +7,9 @@ public class Bullet : MonoBehaviour
 {
     [Header("子弹参数")]
     public float speed = 8f;        // 飞行速度（单位/秒）
-    
 
- 
+
+
     void Update()
     {
         // 每帧朝自己的正前方移动，乘 Time.deltaTime 保证与帧率无关
@@ -19,16 +19,23 @@ public class Bullet : MonoBehaviour
     // 当有碰撞体进入自己的 Trigger 时，Unity 自动调用
     void OnTriggerEnter2D(Collider2D other)
     {
+        // 撞到普通墙：子弹消失
         if (other.CompareTag("Wall"))
         {
-            // 撞墙：子弹消失
             Destroy(gameObject);
         }
+        // 撞到敌人：敌人消失 + 子弹消失
         else if (other.CompareTag("Enemy"))
         {
-            // 撞敌人：敌人消失 + 子弹消失
             Destroy(other.gameObject);
             Destroy(gameObject);
         }
+        // 【新增】撞到空气墙：子弹直接消失
+        else if (other.CompareTag("AirWall"))
+        {
+            Destroy(gameObject);
+        }
     }
+
+
 }
